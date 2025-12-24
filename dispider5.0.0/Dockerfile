@@ -151,6 +151,7 @@ RUN /customize_novnc.sh
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
+RUN python -m patchright install chrome
 
 # 创建非root用户并设置sudo权限
 RUN useradd -m -s /bin/bash -G sudo user && \
