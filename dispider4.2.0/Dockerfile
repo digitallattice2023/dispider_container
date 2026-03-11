@@ -54,7 +54,7 @@ RUN curl -sS https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
        requests \
        patchright \
        nest_asyncio \
-       aiofiles \
+       aiofiles
 
 
 FROM ubuntu:22.04
