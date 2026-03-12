@@ -6,6 +6,11 @@ sudo chown -R user:user /home/user/patchright_components
 sudo chmod -R 755 /home/user/task
 sudo chmod -R 755 /home/user/patchright_components
 
+# 初始化 per-worker 持久化数据目录
+sudo mkdir -p /home/user/data
+sudo chown -R user:user /home/user/data
+sudo chmod -R 755 /home/user/data
+
 echo "Starting SSH service ..."
 # 启动SSH服务
 sudo service ssh start
