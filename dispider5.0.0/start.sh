@@ -84,7 +84,18 @@ fi
 # 自动打开终端，执行Python脚本，然后启动一个可交互的bash shell
 # 这样既能看到脚本输出，又能获得一个可以操作的终端
 echo "Opening terminal, executing python script, and starting an interactive shell..."
-xfce4-terminal -e 'bash -c "/usr/local/bin/python /home/user/task/main.py; exec bash"' &
+if [ -n "$SCHEDULE" ]; then
+    echo "定时模式启用：SCHEDULE=$SCHEDULE"
+    env | grep -v '^_=' | sed 's/^\(.*\)$/export \1/' > /tmp/cron_env.sh
+    cat > /tmp/crontab_entry << CRON_EOF
+$SCHEDULE /bin/bash -c 'source /tmp/cron_env.sh && DISPLAY=:1 /usr/local/bin/python /home/user/task/main.py >> /home/user/data/schedule.log 2>&1'
+CRON_EOF
+    crontab /tmp/crontab_entry
+    sudo cron
+    xfce4-terminal -e 'bash -c "/usr/local/bin/python /home/user/task/main.py; echo 定时模式已激活，后续执行见 /home/user/data/schedule.log; exec bash"' &
+else
+    xfce4-terminal -e 'bash -c "/usr/local/bin/python /home/user/task/main.py; exec bash"' &
+fi
 
 echo "Starting noVNC on port 8080 ..."
 # 启动noVNC代理，将web请求转发到VNC服务器
