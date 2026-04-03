@@ -164,7 +164,7 @@ RUN mkdir -p /home/user/Desktop && \
     # 设置所有权限为user用户
     chown -R user:user /home/user
 
-# 创建任务目录并设置公共patchright组件目录
+# 创建任务目录并
 RUN mkdir -p /home/user/task
 RUN chown -R user:user /home/user/task && chmod -R 755 /home/user/task
 

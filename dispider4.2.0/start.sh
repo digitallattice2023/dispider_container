@@ -2,9 +2,7 @@
 set -e
 
 sudo chown -R user:user /home/user/task
-sudo chown -R user:user /home/user/patchright_components
 sudo chmod -R 755 /home/user/task
-sudo chmod -R 755 /home/user/patchright_components
 
 # 初始化 per-worker 持久化数据目录
 sudo mkdir -p /home/user/data
