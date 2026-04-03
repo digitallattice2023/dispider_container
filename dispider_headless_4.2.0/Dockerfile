@@ -42,6 +42,7 @@ RUN curl -sS https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
        wheel \
        pandas \
        numpy \
+       lxml \
        fake-useragent \
        dispider==3.0.4 \
        bs4 \
@@ -120,19 +121,23 @@ RUN echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen && \
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# 安装 Patchright Chrome
-RUN python -m patchright install chrome
-
 # 创建非root用户并设置sudo权限
 RUN useradd -m -s /bin/bash -G sudo user && \
     echo "user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/user && \
     chmod 0440 /etc/sudoers.d/user
 
-# 创建任务目录并设置公共patchright组件目录
-RUN mkdir -p /home/user/task
-RUN mkdir -p /home/user/patchright_components
-RUN chown -R user:user /home/user/task && chmod -R 755 /home/user/task
+# 创建任务目录并设置公共patchright组件目录（必须在安装浏览器前完成）
+RUN mkdir -p /home/user/task && \
+    mkdir -p /home/user/patchright_components && \
+    chown -R user:user /home/user/task && \
+    chmod -R 755 /home/user/task
+
+# 设置浏览器路径（必须在 install 前声明，否则装到 root 默认缓存）
 ENV PLAYWRIGHT_BROWSERS_PATH=/home/user/patchright_components
+
+# 安装 Patchright 浏览器（chromium 供 headless 采集，chrome 供需要完整渲染的场景）
+RUN python -m patchright install chromium chrome && \
+    chown -R user:user /home/user/patchright_components
 
 RUN chmod 1777 /tmp
 

@@ -43,6 +43,7 @@ RUN curl -sS https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
        setuptools \
        wheel \
        pandas \
+       lxml \
        numpy \
        fake-useragent \
        dispider==3.0.4 \
@@ -165,9 +166,7 @@ RUN mkdir -p /home/user/Desktop && \
 
 # 创建任务目录并设置公共patchright组件目录
 RUN mkdir -p /home/user/task
-RUN mkdir -p /home/user/patchright_components
 RUN chown -R user:user /home/user/task && chmod -R 755 /home/user/task
-ENV PLAYWRIGHT_BROWSERS_PATH=/home/user/patchright_components
 
 # 修改必要目录的权限
 RUN chown -R user:user /opt/novnc && \
